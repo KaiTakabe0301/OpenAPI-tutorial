@@ -12,16 +12,8 @@ paths:
         - artists
       description: アーティスト一覧を取得する
       parameters:
-        - name: limit
-          in: query
-          description: Limits the number of items per page
-          schema:
-            type: integer
-        - name: offset
-          in: query
-          description: ページのオフセット
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/PageLimit"
+        - $ref: "#/components/parameters/PageOffset"
       responses:
         200:
           description: アーティスト一覧の取得に成功
@@ -33,16 +25,8 @@ paths:
                   $ref: "#/components/schemas/Artist"
 
         400:
-          description: リクエストが不正
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: エラーメッセージ
-                    example: "リクエストが不正です"
+          $ref: "#/components/responses/400Error"
+
     post:
       tags:
         - artists
@@ -60,15 +44,7 @@ paths:
           description: アーティストの登録に成功
 
         400:
-          description: リクエストが不正
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "リクエストが不正です"
+          $ref: "#/components/responses/400Error"
 
   /artists/{username}:
     get:
@@ -90,15 +66,8 @@ paths:
                 $ref: "#/components/schemas/Artist"
 
         400:
-          description: リクエストが不正
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "リクエストが不正です"
+          $ref: "#/components/responses/400Error"
+
 components:
   securitySchemes:
     BasicAuth:
@@ -123,3 +92,32 @@ components:
         username:
           type: string
           example: "BUMP_OF_CHICKEN"
+
+  parameters:
+    PageLimit:
+      description: 一度に取得する件数
+      name: limit
+      in: query
+      schema:
+        type: integer
+        example: 10
+
+    PageOffset:
+      description: ページのオフセット
+      name: offset
+      in: query
+      schema:
+        type: integer
+        example: 0
+
+  responses:
+    400Error:
+      description: リクエストが不正
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "リクエストが不正です"
