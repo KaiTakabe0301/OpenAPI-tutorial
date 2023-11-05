@@ -30,24 +30,8 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - username
-                  properties:
-                    artist_name:
-                      type: string
-                      description: アーティスト名
-                      example: "BUMP OF CHICKEN"
-                    artist_genre:
-                      type: string
-                      description: アーティストのジャンル
-                      example: "J-POP"
-                    albums_recorded:
-                      type: integer
-                      description: アーティストのアルバム数
-                      example: 10
-                    username:
-                      type: string
+                  $ref: "#/components/schemas/Artist"
+
         400:
           description: リクエストが不正
           content:
@@ -69,18 +53,8 @@ paths:
         content:
           application/josn:
             schema:
-              type: object
-              required:
-                - username
-              properties:
-                artist_name:
-                  type: string
-                artist_genre:
-                  type: string
-                albums_recorded:
-                  type: integer
-                username:
-                  type: string
+              $ref: "#/components/schemas/Artist"
+
       responses:
         200:
           description: アーティストの登録に成功
@@ -113,20 +87,8 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  artist_name:
-                    type: string
-                    description: アーティスト名
-                    example: "BUMP OF CHICKEN"
-                  artist_genre:
-                    type: string
-                    description: アーティストのジャンル
-                    example: "J-POP"
-                  albums_recorded:
-                    type: integer
-                    description: アーティストのアルバム数
-                    example: 10
+                $ref: "#/components/schemas/Artist"
+
         400:
           description: リクエストが不正
           content:
@@ -137,3 +99,27 @@ paths:
                   message:
                     type: string
                     example: "リクエストが不正です"
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+    Artist:
+      type: object
+      required:
+        - username
+      properties:
+        artist_name:
+          type: string
+          example: "BUMP OF CHICKEN"
+        artist_genre:
+          type: string
+          example: "J-POP"
+        albums_recorded:
+          type: integer
+          example: 10
+        username:
+          type: string
+          example: "BUMP_OF_CHICKEN"
