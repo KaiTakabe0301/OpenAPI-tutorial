@@ -1,0 +1,139 @@
+openapi: "3.0.2"
+info:
+  title: Simple Title
+  version: "1.0"
+  description: OpenAPIのチュートリアル
+servers:
+  - url: https://api.server.test/v1
+paths:
+  /artists:
+    get:
+      tags:
+        - artists
+      description: アーティスト一覧を取得する
+      parameters:
+        - name: limit
+          in: query
+          description: Limits the number of items per page
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: ページのオフセット
+          schema:
+            type: integer
+      responses:
+        200:
+          description: アーティスト一覧の取得に成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - username
+                  properties:
+                    artist_name:
+                      type: string
+                      description: アーティスト名
+                      example: "BUMP OF CHICKEN"
+                    artist_genre:
+                      type: string
+                      description: アーティストのジャンル
+                      example: "J-POP"
+                    albums_recorded:
+                      type: integer
+                      description: アーティストのアルバム数
+                      example: 10
+                    username:
+                      type: string
+        400:
+          description: リクエストが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: エラーメッセージ
+                    example: "リクエストが不正です"
+    post:
+      tags:
+        - artists
+      description: アーティストを登録する
+      requestBody:
+        description: アーティスト情報
+        required: true
+        content:
+          application/josn:
+            schema:
+              type: object
+              required:
+                - username
+              properties:
+                artist_name:
+                  type: string
+                artist_genre:
+                  type: string
+                albums_recorded:
+                  type: integer
+                username:
+                  type: string
+      responses:
+        200:
+          description: アーティストの登録に成功
+
+        400:
+          description: リクエストが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "リクエストが不正です"
+
+  /artists/{username}:
+    get:
+      description: アーティスト情報を取得する
+      parameters:
+        - name: username
+          in: path
+          description: アーティストのユーザー名
+          required: true
+          schema:
+            type: string
+            example: "BUMP_OF_CHICKEN"
+      responses:
+        200:
+          description: アーティスト情報を取得
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artist_name:
+                    type: string
+                    description: アーティスト名
+                    example: "BUMP OF CHICKEN"
+                  artist_genre:
+                    type: string
+                    description: アーティストのジャンル
+                    example: "J-POP"
+                  albums_recorded:
+                    type: integer
+                    description: アーティストのアルバム数
+                    example: 10
+        400:
+          description: リクエストが不正
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "リクエストが不正です"
